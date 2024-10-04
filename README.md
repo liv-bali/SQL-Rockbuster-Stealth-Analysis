@@ -20,4 +20,4 @@ Key data points encompass:
 - Customer Information: Data on customer demographics and rental behavior.
 - Payments: Records of transactions and revenue details.
 
-View visualizations here: Visualizations on Tableau Public
+View visualizations here: [Visualizations on Tableau Public](https://public.tableau.com/app/profile/liv.balistreri/viz/Project3_10_17231748932400/Story1?publish=yes)
