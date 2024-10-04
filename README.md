@@ -19,4 +19,5 @@ Key data points encompass:
 - Film Inventory: Details about available movies, genres, and rental durations.
 - Customer Information: Data on customer demographics and rental behavior.
 - Payments: Records of transactions and revenue details.
+
 View visualizations here: Visualizations on Tableau Public
