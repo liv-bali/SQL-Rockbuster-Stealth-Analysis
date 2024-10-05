@@ -1,0 +1,38 @@
+This SQL query calculates the average amount spent by the top 5 customers, based on their total payment amount.  The query uses CTEs to filter and aggregate data from the database.
+
+WITH TopCountries AS (
+SELECT CO.country
+ FROM customer AS C
+ INNER JOIN address AS A ON A.address_id = C.address_id
+ INNER JOIN city AS CI ON CI.city_id = A.city_id
+ INNER JOIN country AS CO ON CO.country_id = CI.country_id
+ GROUP BY CO.country
+ ORDER BY COUNT(C.customer_id) DESC
+ LIMIT 10
+),
+TopCities AS (
+ SELECT CI.city
+ FROM customer AS C
+ INNER JOIN address AS A ON A.address_id = C.address_id
+ INNER JOIN city AS CI ON CI.city_id = A.city_id
+ INNER JOIN country AS CO ON CO.country_id = CI.country_id
+ WHERE CO.country IN (SELECT country FROM TopCountries)
+ GROUP BY CO.country, CI.city
+ ORDER BY COUNT(C.customer_id) DESC
+ LIMIT 10
+),
+TopCustomers AS (
+ SELECT C.customer_id, C.first_name, C.last_name, CO.country, CI.city, SUM(P.amount) AS
+total_amount_payment
+ FROM payment AS P
+ INNER JOIN customer AS C ON C.customer_id = P.customer_id
+ INNER JOIN address AS A ON A.address_id = C.address_id
+ INNER JOIN city AS CI ON CI.city_id = A.city_id
+ INNER JOIN country AS CO ON CO.country_id = CI.country_id
+ WHERE CI.city IN (SELECT city FROM TopCities)
+ GROUP BY C.customer_id, CO.country, CI.city
+ ORDER BY total_amount_payment DESC
+ LIMIT 5
+)
+SELECT AVG(total_amount_payment) AS average
+FROM TopCustomers;
