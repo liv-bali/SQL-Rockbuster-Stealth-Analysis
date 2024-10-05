@@ -1,4 +1,5 @@
-Thie SQL 
+This SQL query calculates the average amount spent by the top 5 customers, based on their total payment amount.  The query uses CTEs to filter and aggregate data from the database.
+
 
 SELECT AVG (total_amount_payment) AS average FROM
 (SELECT B.customer_id, B.first_name, B.last_name, E.country, D.city, SUM(A.amount) AS
