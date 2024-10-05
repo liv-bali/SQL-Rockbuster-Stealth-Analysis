@@ -1,0 +1,28 @@
+Thie SQL 
+
+SELECT AVG (total_amount_payment) AS average FROM
+(SELECT B.customer_id, B.first_name, B.last_name, E.country, D.city, SUM(A.amount) AS
+	total_amount_payment
+	FROM payment A
+	INNER JOIN customer B ON B.customer_id = A.customer_id
+	INNER JOIN address C ON C.address_id = B.address_id
+	INNER JOIN city D ON D.city_id = C.city_id
+	INNER JOIN country E ON E.country_id = D.country_id
+	WHERE D.city IN (
+	SELECT D.city FROM customer B
+	INNER JOIN address C ON C.address_id = B.address_id
+	INNER JOIN city D ON D.city_id = C.city_id
+	INNER JOIN country E ON E.country_id = D.country_id
+	WHERE E.country IN (
+	SELECT E.country FROM customer B
+	INNER JOIN address C ON C.address_id = B.address_id
+	INNER JOIN city D ON E.country_id = D.country_id
+	GROUP BY E.country
+	ORDER BY COUNT (B.customer_id) DESC
+	LIMIT 10)
+	GROUP BY E.country,D.city
+	ORDER BY COUNT(B.customer_id) DESC
+	LIMIT 10)
+	GROUP BY B.customer_id,E.country,D,city
+	ORDER BY total_amount_payment DESC
+	LIMIT 5) AS total_amount_payment;
